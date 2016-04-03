@@ -133,6 +133,10 @@ class Sensor:
         temp_H &=0x7F
 
         tempC = (temp_H*256+temp_L)/10
+
+        if negative:
+            tempC = -abs(tempC)
+
         tempF = self.c_to_f(tempC)
 
         # Verify CRC here
@@ -145,10 +149,6 @@ class Sensor:
             assert(0)
             self.lastError('CRC error in sensor data.')
             return None
-
-        if negative:
-            tempC = -abs(tempC)
-            tempF = -abs(tempF)
 
         return (humidity, tempC, tempF)
 
